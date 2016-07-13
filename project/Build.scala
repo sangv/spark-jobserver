@@ -112,11 +112,11 @@ object JobServerBuild extends Build {
       val sparkBuild = s"spark-$sparkVersion"
       val sparkBuildCmd = scalaBinaryVersion.value match {
         case "2.10" =>
-          "./make-distribution.sh -Phadoop-2.4 -Phive"
+          "./make-distribution.sh -Phadoop-2.6 -Dhadoop.version=2.6.2 -Dscala-2.10 -Phive"
         case "2.11" =>
           """
             |./dev/change-scala-version.sh 2.11 && \
-            |./make-distribution.sh -Dscala-2.11 -Phadoop-2.4 -Phive
+            |./make-distribution.sh -Phadoop-2.6 -Dhadoop.version=2.6.2 -Dscala-2.11 -Phive
           """.stripMargin.trim
         case other => throw new RuntimeException(s"Scala version $other is not supported!")
       }
@@ -204,7 +204,7 @@ object JobServerBuild extends Build {
     organization := "spark.jobserver",
     crossPaths   := true,
     crossScalaVersions := Seq("2.10.6","2.11.8"),
-    scalaVersion := sys.env.getOrElse("SCALA_VERSION", "2.10.6"),
+    scalaVersion := sys.env.getOrElse("SCALA_VERSION", "2.11.8"),
     publishTo    := Some(Resolver.file("Unused repo", file("target/unusedrepo"))),
     // scalastyleFailOnError := true,
     runScalaStyle := {
